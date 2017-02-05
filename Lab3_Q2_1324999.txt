@@ -1,0 +1,82 @@
+/* 
+ * File:   main.c
+ * Author: Kevin
+ *
+ * Created on October 28, 2015, 12:06 PM
+ */
+
+#include <stdio.h>
+#include <stdlib.h>
+
+/*sort takes a and allocates a new array , in increasing order & without repetition
+ * 
+ */
+int *sort(const int a[], int n, int *ptr);
+int *sort(const int a[], int n, int *ptr){
+    int min=a[0],position_of_min=0,i;
+    int max=a[0];
+    int previous_min;
+    int Temp_x[n],flag=0;
+
+    *ptr=0; // *ptr is length of sorted array
+    
+    // Searching for the lowest int in array a
+    // and also the max, so the while loop knows when to stop
+    for(i=0;i<n;i++){
+        if(a[i]<min){
+            min=a[i];
+            position_of_min=i;
+        }   
+        if(a[i]>max){
+            max=a[i];
+        }   
+    }
+    //printf("%d zzzzz %d \n",min,max);   
+    //store lowest
+    Temp_x[0]=min;
+    previous_min=min;
+    //printf("%d zzzzz %d \n",min,Temp_x[0]);
+    *ptr=*ptr+1;
+    //printf("%d zzzzz %d \n",previous_min,*ptr);
+    
+    while(flag==0){
+        min=max+1;
+        for(i=0;i<n;i++){
+            if(previous_min<a[i] && a[i]<min){
+                min=a[i];
+            }
+        }
+        //printf("%d zzzzz %d ....%d...%d\n",previous_min,*ptr,min,max);
+        if(min==max){
+            flag=1;
+        }
+        previous_min=min;
+        Temp_x[*ptr]=min;
+        *ptr=*ptr+1;
+    }
+    
+    //*ptr=*ptr+1; // *ptr started at 0 to be used as an index, but it represents length,not index
+    
+    int *x;
+    x= (int*)calloc(*ptr, sizeof(int));
+    for(i=0;i<*ptr;i++){
+        x[i]=Temp_x[i];
+    }
+    return(&x[0]);
+}
+
+int main(int argc, char** argv) {
+    int R[]={3,-2,1,9,3,6,-2};
+    int size=7;
+    int new_size;
+    int *y;
+    printf("%d address %d \n",new_size,&new_size);
+    y=sort(R,size,&new_size);
+    
+    int j;
+    for(j=0;j<new_size;j++){
+        printf("y[%d] = %d \n",j,y[j]);
+    }
+    return (EXIT_SUCCESS);
+}
+

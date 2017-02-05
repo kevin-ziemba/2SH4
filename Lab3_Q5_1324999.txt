@@ -1,0 +1,94 @@
+/* 
+ * File:   main.c
+ * Author: Kevin
+ *
+ * Created on October 28, 2015, 12:07 PM
+ */
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+/*
+ * 
+ */
+char **read_words(const char *input_filename, int *nPtr);
+void output_words(const char *output_filename, char ** sArray, int size);
+
+char **read_words(const char *input_filename, int *nPtr){
+    int i,j;
+    char character;
+    
+    FILE *input_file = fopen( input_filename,"r");
+    if (input_file == NULL){
+        printf("Couldnt open\n");}
+  
+    
+    fscanf(input_file,"%d",nPtr); //not *nPtr because nPtr IS the address of the variable we want to change
+    int length[*nPtr];
+    
+    /////Gets the length of each string in the file /////
+    fscanf(input_file,"%c",&character);
+    while(character != EOF && character != '\n'){
+        fscanf(input_file,"%c",&character);
+    }
+    for(i=0;i<*nPtr;i++){
+        length[i]=0;
+        fscanf(input_file,"%c",&character);
+        while(character != EOF && character != '\n'){
+            if(character != '\r'){
+                length[i]=length[i]+1;
+                fscanf(input_file,"%c",&character);
+                }
+            if(character == '\r'){
+                fscanf(input_file,"%c",&character);}
+            }
+        }
+    ///// reset the file reader to read each string,instead of length of string as before
+    rewind(input_file);
+    fscanf(input_file,"%c",&character);
+    while(character != EOF && character != '\n'){
+        fscanf(input_file,"%c",&character);
+    }    
+    
+    ///// allocating space for the array //////
+    char **string_list;//[*nPtr];
+    string_list= malloc(*nPtr * sizeof(char*)); //size of char* ?
+    for(i=0;i<*nPtr;i++){
+        string_list[i] = malloc( (length[i]+1)*sizeof(char));
+        fscanf(input_file,"%[^\n]s", string_list[i]);
+        string_list[i][length[i]]='\0';
+        fscanf(input_file,"%c",&character);
+    }
+
+    fclose(input_file);
+    return(string_list); // array==&array[0]]==*arrayPtr
+    
+
+}
+
+void output_words(const char *output_filename, char ** sArray, int size){
+    int i;
+    FILE *output_file = fopen( output_filename,"w");
+    
+    fprintf(output_file,"%d\n",size);
+    for(i=size-1;i>=0;i--){
+        fprintf(output_file,"%s\n",sArray[i]);
+    }
+    fclose(output_file);
+}
+
+int main(int argc, char** argv) {
+    int n=NULL;
+    char in_filename[]="InputFile.txt";
+    char out_filename[]="OutputFile.txt";
+    
+    char **string_list=read_words(&in_filename[0],&n);
+    output_words(&out_filename[0],string_list,n);
+    
+
+    free(string_list);
+    
+    
+    return (EXIT_SUCCESS);
+}
+

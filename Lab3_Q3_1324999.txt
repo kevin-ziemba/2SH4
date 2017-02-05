@@ -1,0 +1,62 @@
+/* 
+ * File:   main.c
+ * Author: Kevin
+ *
+ * Created on October 28, 2015, 12:06 PM
+ */
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+/* strcat combines 2 strings into a single longer one and returns the address
+ * of the first array element
+ * A string = char array + \0 at the end
+ * strlen(X) does not include \0 as part of the 'length'
+ */
+char *my_strcat( const char * const str1, const char * const str2);
+char *my_strcat( const char * const str1, const char * const str2){
+    int len_str1,len_str2,len_new;
+    
+    int i,j;
+    
+    len_str1=strlen(str1);
+    len_str2=strlen(str2);
+    len_new = len_str1 + len_str2;
+    
+    char *str_new= malloc(len_new+1);
+
+    i=0;
+    
+    for(j=0;j<len_str1;j++){
+        str_new[i]=str1[j];
+        i=i+1;
+        printf("%c?\n",str_new[i-1]);
+    }
+    printf("%c?\n",str_new[4]);
+    for(j=0;j<len_str2;j++){
+        str_new[i]=str2[j];
+        i=i+1;
+    } 
+    str_new[i]='\0'; //adding the terminating null character
+       
+    return(str_new);
+}
+int main(int argc, char** argv) {
+    char H[]="monday";
+    char R[]="Tuesday";
+    char * newString=my_strcat(&H,&R);
+    
+    
+    
+    int k;
+    for(k=0; k<(strlen(newString)) ;k++){
+        printf("newString[%d] = %c\n",k,newString[k]);
+    }
+    
+    
+    if(newString[strlen(newString)] == '\0'){
+        printf("last character is \\0 \n");}
+    return (EXIT_SUCCESS);
+}
+

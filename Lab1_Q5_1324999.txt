@@ -1,0 +1,32 @@
+/* 
+ * File:   main.c
+ * Author: Kevin
+ *
+ * Created on September 14, 2015, 8:06 PM
+ */
+
+#include <stdio.h>
+#include <stdlib.h>
+
+/* Program displays all Pythagorean Triples (a^2+b^2=c^2,all integers)
+ * from 1 to N (=200)
+ */
+int main(int argc, char** argv) {
+    int HYP,S2,S1;
+    int count=0;
+    int N=200;
+    for(HYP=1;HYP<=N;HYP++){
+        for(S2=1;S2<=HYP;S2++){
+            for(S1=1;S1<=S2;S1++){
+                if( (S1*S1+S2*S2) == HYP*HYP){
+                    printf("S1: %d -- S2: %d -- Hypotenuse : %d \n",S1,S2,HYP);
+                    count++;
+                }
+                
+            }
+        }
+    }
+    printf("Number of pythagorean triples : %d\n",count);
+    return (EXIT_SUCCESS);
+}
+

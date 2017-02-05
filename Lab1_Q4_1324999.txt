@@ -1,0 +1,35 @@
+/* 
+ * File:   main.c
+ * Author: Kevin
+ *
+ * Created on September 14, 2015, 1:50 PM
+ */
+
+#include <stdio.h>
+#include <stdlib.h>
+
+/*Estimate pi 
+ * pi =4-4/3+4/5+4/7-4/9....
+ */
+int main(int argc, char** argv) {
+    int i;
+    int n=0;
+    int sign = 1;
+    double sum=0;
+    while(n<1){
+        printf("Please enter how many terms to use to estimate pi: ");
+        scanf("%d",&n);
+        if(n< 1) // if negative
+            {
+                printf("--The number must be an integer ,1 or greater\n");
+            }
+    }
+    for(i=1;i<n+1;i++){
+        sum=sum+4.0/(2*i-1)*sign;
+        sign=-1*sign;//flips the terms from positive to negative values,or vice versa
+        
+    }
+    printf("The estimation of Pi to %d terms is %f\n",n,sum);
+    return (EXIT_SUCCESS);
+}
+

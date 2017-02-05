@@ -1,0 +1,19 @@
+%% %%%%%%%%%%%%%%%%%%%%%%~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+%%_Question 2   , Lab Bonus_%% Comp Eng 2SH4
+%%_Plot function twice on same graph
+%%%%%%%%%%%%%%%%%%%%%%%%~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+%linspace(start,finish,# of points)
+x1= linspace(0,4*pi,10);    %creating an x vector with the points we need to evalutate function y
+x2= linspace(0,4*pi,100); 
+
+y1= exp(-0.4*x1).*sin(x1);  %two different y vectors are created, each with a respective x
+y2= exp(-0.4*x2).*sin(x2);
+
+figure
+%subplot(row,coloumn, position#)
+subplot(2,1,1)  %plot y1 , y2 sepearetly ,but on top of each other
+plot(x1,y1)
+
+subplot(2,1,2)
+plot(x2,y2)

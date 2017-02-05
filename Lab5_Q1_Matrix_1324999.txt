@@ -1,0 +1,188 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package l5_q1;
+
+/**
+ *
+ * @author Kevin
+ */
+
+
+public class Matrix{
+        private int[][]  matrixData;	// integer array to store integer data
+        private int    rowMatrix;	// number of rows
+        private int    colMatrix;	// number of columns
+
+
+        public Matrix( int row, int col ) //constructor1
+        {   
+                /* constructs a row-by-col matrix with all elements equal to 0; 
+                if row<=0 then the number of rows of the matrix is set to 2; 
+                likewise, if col<=0 the number of columns of the matrix is set to 2. */
+
+                rowMatrix = row;
+                colMatrix = col;
+
+                if ( rowMatrix <= 0) {
+                        rowMatrix = 2;
+                }
+
+                if ( colMatrix <= 0) {
+                        colMatrix = 2;
+                }
+
+                matrixData = new int[rowMatrix][colMatrix]; //allocates memory for the matrix elements; all elements will be set to 0
+
+        }
+
+
+        public Matrix( int[][] data) // constructor2
+        {	
+                /* constructs a matrix out of the two dimensional array data, 
+                   with the same number of rows, columns, and the same element in each position as array data. */	
+                rowMatrix=data.length;
+                colMatrix=data[0].length;
+                matrixData = new int[rowMatrix][colMatrix];
+                for(int i=0;i<rowMatrix;i++){
+                    for(int j=0;j<colMatrix;j++){
+                        matrixData[i][j]=data[i][j];
+                    }
+                }
+        }
+
+
+        public int getElement(int i, int j) throws ArithmeticException
+        { 	
+                /* if i and j are valid indices of this matrix, 
+                   then the element on row i and column j of this matrix
+                   is returned; otherwise it throws an exception with message "Invalid indexes".*/
+
+                if  (i < rowMatrix && j < colMatrix ) {
+                        return( matrixData[i][j]);
+                }
+                else {
+                        throw new ArithmeticException("Invalid indexes.");
+                }
+
+        }
+
+
+        public boolean setElement(int  x, int i, int j)
+        {	
+                /* if  i and j are valid indices of this matrix, then the element on  row i and
+                       column j of this matrix is assigned the value  x  and true is returned; otherwise false is returned */
+                if  (i < rowMatrix && j < colMatrix ) {
+                        matrixData[i][j]=x;
+                        return(true);
+                }
+                else {
+                        return(false);
+                }
+
+        }
+
+
+        public Matrix copy()
+        { /* returns a deep copy of this Matrix */
+
+                Matrix 	m = new Matrix(this.matrixData);
+                return m;
+
+        }
+
+
+        public void addTo( Matrix m ) throws ArithmeticException
+        {
+                /*adds Matrix m to this Matrix; it throws an exception message "Invalid operation"
+                  if the matrix addition is not defined*/
+
+                if (rowMatrix == m.rowMatrix && colMatrix == m.colMatrix) {
+                    for(int i=0;i<rowMatrix;i++){
+                        for(int j=0;j<colMatrix;j++){
+                            matrixData[i][j]=matrixData[i][j]+m.matrixData[i][j];
+                        }
+                    }
+                }
+                else {
+                        throw new ArithmeticException("Invalid operation");
+                }
+
+        }
+
+
+
+        public Matrix subMatrix(int i, int j) throws ArithmeticException
+        {
+                /*returns a new Matrix object, which is a submatrix of this Matrix, formed out of rows 0 through i and
+                 columns 0 through j. The method should first check if values i and j are within the required range,
+                 and throw an exception if they are not. The exception detail message should read: "Submatrix not defined"*/
+                if  (i < rowMatrix && j < colMatrix ) {
+                    
+                    Matrix sub_m = new Matrix(i+1,j+1);
+                    for(int n=0;n<i+1;n++){
+                        for(int m=0;m<j+1;m++){
+                            sub_m.matrixData[n][m]=matrixData[n][m];
+                        }
+                    }
+                    return(sub_m);
+                }
+                else {
+                        throw new ArithmeticException("Submatrix not defined");
+                }
+
+        }
+
+
+
+        public boolean isLowerTr()
+        {
+            if(this.colMatrix == this.rowMatrix){
+                for(int i=0;i<this.colMatrix-2;i++){
+                    for(int j=1+i;j<this.colMatrix;j++){
+                        if(this.matrixData[i][j]!=0){
+                            return(false);
+                        }
+                    }
+                }
+                return(true);
+            }
+                
+            else{return(false);}
+        }//end method
+
+
+
+        public static Matrix sum( Matrix[] matrixArray ) throws ArithmeticException
+
+        {	/* returns a new matrix representing the sum of all matrices in the input array.
+                The method throws an exception if the matrices do not have the same dimensions. 
+                This method must use method addTo() to perform the addition of two matrices.; */
+                Matrix sumMatrix = new Matrix(matrixArray[0].rowMatrix,matrixArray[0].colMatrix);
+                for(int i=0;i< matrixArray.length;i++){
+                    sumMatrix.addTo(matrixArray[i]);
+                }
+                
+                return(sumMatrix);
+        }
+
+
+        public String toString(  )
+        {
+                /* returns a string representing the matrix, 
+                   with each row on a line, and the elements in each row being separated by 2 blank spaces. */
+
+                String output = new String(); // creates an empty string
+                for(int i = 0; i < this.rowMatrix; i++){
+                        for(int j = 0; j < this.colMatrix; j++){
+                                output += this.matrixData[i][j] + "  ";
+                        }
+                output += "\n";
+                }
+                 return output;
+        }
+
+
+}//end class

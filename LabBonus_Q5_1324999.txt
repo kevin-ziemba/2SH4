@@ -1,0 +1,38 @@
+function [ value ] = is_diagonally_dom( A )
+%returns 1 if a matrix is diagonally dominant across it's rows, 0 otherwise
+
+row_sum=sum(abs(A'));
+diagonal=diag(abs(A));
+row_value=row_sum.'-diagonal; %row_value is the sum of elements in a row, taking out the main diagonal element
+                            %,used to compare the main diagonal with the
+                            %rest of the row
+                            
+is_dom=diagonal>row_value;
+if(all(is_dom)) %checks if all rows are diagonally dominant,returns 1 if they are
+    value=1;
+else
+    value=0;
+
+
+end
+
+
+
+
+
+%% %%%%%%%%%%%%%%%%%%%%%%~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+%%_Question 5   , Lab Bonus_%% Comp Eng 2SH4
+%%_Verify if a matrix is diagonally dominant (diag>rest of row)
+%%%%%%%%%%%%%%%%%%%%%%%%~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+A=[1 0 0;2 5 2;4 0 5];  % diagonally dominant
+is_diagonally_dom( A )
+
+B=[5 2;-3 3]; % not diagonally dominant
+is_diagonally_dom( B )
+
+C=[1 0 0;2 2 2;0 0 1];  % not diagonally dominant
+is_diagonally_dom( C )
+
+D=[-9 8; 3 -4]; % diagonally dominant
+is_diagonally_dom( D )

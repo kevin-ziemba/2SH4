@@ -1,0 +1,34 @@
+/* 
+ * File:   main.c
+ * Author: Kevin
+ *
+ * Created on September 14, 2015, 1:26 PM
+ */
+
+#include <stdio.h>
+#include <stdlib.h>
+
+/* Program asks the user to enter an integer, and tells the user 
+ * that it is 2 digits if it is. Quits when 0 is entered
+ */
+int main(int argc, char** argv) {
+    int value=1;
+    int num;
+    while(value!=0){
+        printf("Please enter an integer (0 to quit)");
+        scanf("%d",&value);
+        num=value;
+        
+        if(value<0){
+            value=-1*value;
+        }
+        if(value>=10 && value<=99){
+            printf("The number you entered was 2 digits: %d\n",num);
+        }
+        if(value==0){
+            printf("Goodbye\n");
+        }
+    }
+    return (EXIT_SUCCESS);
+}
+

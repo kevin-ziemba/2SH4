@@ -1,0 +1,47 @@
+/* 
+ * File:   main.c
+ * Author: Kevin
+ *
+ * Created on September 14, 2015, 8:50 AM
+ */
+
+#include <stdio.h>
+#include <stdlib.h>
+
+/* Reverses a 7 digit number, using numeric operations only
+ * 1234567--> 7654321
+ * 1234000-->4321
+ */ 
+int main(int argc, char** argv) {
+    int n,number,length;
+    int reverse=0,i,original;
+    int lastDigit,flag=0;
+    
+    while(flag==0) // repeats until an integer >0 is entered
+    {
+        printf("Please enter how many digits the number you are reversing is: ");
+        scanf("%d",&length);
+        if(length<= 0) // if negative
+        {
+            printf("--The number must be a positive integer,try again\n");
+        }
+        else
+        {
+            flag=1;
+        }
+    }
+    printf("What number are you reversing: ");
+    scanf("%d",&number);
+    
+    original = number;
+    for(i=1;i<=length;i++){
+        lastDigit=number%10; //Finds the last digit, adds it to reverse, 
+        number=(number-lastDigit)/10; //and multiples by 10 to put numbers in  decimal places
+        reverse=(reverse+lastDigit)*10;
+    }
+    reverse=reverse/10; //Removing the last *10 from the for loop
+    printf("%d has been reversed into %d\n",original,reverse);
+    // n%10 =7
+    //n/10 = 4893 = d
+    return (EXIT_SUCCESS);
+}

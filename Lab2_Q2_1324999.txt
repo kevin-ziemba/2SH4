@@ -1,0 +1,118 @@
+/* 
+ * File:   main.c
+ * Author: Kevin
+ *
+ * Created on October 1, 2015, 8:23 PM
+ */
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+#define N 3
+/*Determines a Diagonally dominant matrix
+ * 
+ */
+
+int is_diag_dom(int mat[ ][N]);
+int is_toeplitz(int a[][N], int m);
+void print_matrix_diag(int a[][N]);
+
+int is_diag_dom(int mat[ ][N]){
+    int i,j;
+    int row_sum,diagonal_value;
+    // i is row number, j is column number
+    for(i=0;i<N;i++){
+        row_sum=0,diagonal_value=0; //resets the values comparing row entries
+        for(j=0;j<N;j++){
+            if(j==i){
+                diagonal_value=fabs(mat[i][j]); // finds and stores the value on main diagonal
+            }
+            else{
+                row_sum+=fabs(mat[i][j]); //adds values not on main diagonal
+            }
+        }
+        if(row_sum >= diagonal_value){ //if it fails to be diagonal dominant
+            return(0);
+        }
+    }
+    return (1); //1 = diagonally dominant
+}
+int is_toeplitz(int a[][N], int m){ // is a m by N matrix toeplitz
+    int i,j=0;
+    int TEMP_i,TEMP_j;
+    int diagonal_value; //the first value in each diagonal, to check if other values in the diagonal match
+    //Checks the main diagonal,and diagonals below it
+    for(i=m-1;i>=0;i--){ //starts at the last row,ends at the first row
+        TEMP_i=i;
+        TEMP_j=j;
+        diagonal_value=a[i][j];
+        while(TEMP_i<m-1 && TEMP_j<N-1){
+            TEMP_i=TEMP_i+1;
+            TEMP_j=TEMP_j+1;
+            if(diagonal_value != a[TEMP_i][TEMP_j]){
+                return(0);
+            }
+        }
+    }
+    i=0;
+    //Checks diagonals past the main diagonal
+    for(j=1;j<N;j++){ //starts at the last row,ends at the first row
+        TEMP_i=i;
+        TEMP_j=j;
+        diagonal_value=a[i][j];
+        while(TEMP_i<m-1 && TEMP_j<N-1){
+            TEMP_i=TEMP_i+1;
+            TEMP_j=TEMP_j+1;
+            if(diagonal_value != a[TEMP_i][TEMP_j]){
+                return(0);
+            }
+        }
+    }
+    return(1);
+}
+void print_matrix_diag(int a[][N]){
+    int i,j=0;
+    int TEMP_i,TEMP_j;
+    for(i=0;i<N;i++){ 
+        TEMP_i=i;
+        TEMP_j=j;
+        while(TEMP_i>=0 && TEMP_j<N){
+            printf("%d  ",a[TEMP_i][TEMP_j]);
+            TEMP_i=TEMP_i-1;
+            TEMP_j=TEMP_j+1;
+            
+            }
+        }
+    i=N-1;
+    for(j=1;j<N;j++){ //starts at the last row,ends at the first row
+        TEMP_i=i;
+        TEMP_j=j;
+        while(TEMP_i>=0 && TEMP_j<N){
+            printf("%d  ",a[TEMP_i][TEMP_j]);
+            TEMP_i=TEMP_i-1;
+            TEMP_j=TEMP_j+1;
+            
+            }
+        }
+    }
+
+int main(int argc, char** argv) {
+    int A[N][N]={{9,-3,4},{4,-7,2},{-4,-3,8}};
+    int B[4][N]={ {3,4,5},{2,3,4},{1,2,3},{0,1,2}};
+    //int C[2][2]={ {2,4},{8,64} };
+    
+    
+    if(is_diag_dom(A)) //TEST part a
+        printf("A is diagonally dominant\n");
+    else
+        printf("A is not diagonally dominant\n");
+    
+    if(is_toeplitz(B,4))
+        printf("B is toeplitz\n");
+    else
+        printf("B is not toeplitz\n");
+
+    print_matrix_diag(A);  //test part c
+    return (EXIT_SUCCESS);
+}
+

@@ -1,0 +1,54 @@
+/* 
+ * File:   main.c
+ * Author: Kevin
+ *
+ * Created on September 13, 2015, 10:08 PM
+ */
+
+#include <stdio.h>
+#include <stdlib.h>
+
+/* Add all even numbers from 10 to 100
+ * Using 3 different loop methods
+ */
+int main(int argc, char** argv) {
+    // FOR LOOP
+    int sum=0;
+    int i;
+    for(i=10;i<=100;i++)//goes through all numbers in range, adding only even ones to sum
+    {
+        if(i%2==0)
+        {
+            sum=sum+i;
+        }
+    }
+    printf("The sum using for loop: %d \n",sum);
+    
+    // WHILE LOOP
+    
+    int sum2=0,i2=10;
+    while(i2<=100)
+    {
+        if(i2%2==0)
+        {
+            sum2=sum2+i2;
+        }
+    i2=i2+1;    
+    }
+    printf("The sum using while loop: %d \n",sum2);
+    
+    // DO WHILE LOOP
+    
+    int sum3=0,i3=10;
+    do
+    {
+        if(i3%2==0)
+        {
+            sum3=sum3+i3;
+        }
+    i3=i3+1;    
+    }
+    while(i3<=100);
+    printf("The sum using do while loop: %d \n",sum2);
+    return (EXIT_SUCCESS);
+}

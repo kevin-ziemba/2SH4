@@ -1,0 +1,13 @@
+%% %%%%%%%%%%%%%%%%%%%%%%~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+%%_Question 1   , Lab Bonus_%% Comp Eng 2SH4
+%%_System of equations solver
+%%%%%%%%%%%%%%%%%%%%%%%%~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+C=[ 1 2 3;3 3 4;2 3 3];
+S=[1;1;2];
+
+% system is defined by C*x=S
+% therefore x= inv(C) * S
+x=C\S % x is the solution matrix
+
+sol=C*x

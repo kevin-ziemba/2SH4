@@ -1,0 +1,221 @@
+/* 
+ * File:   main.c
+ * Author: Kevin
+ *
+ * Created on November 3, 2015, 3:53 PM
+ */
+
+#include <stdio.h>
+#include <stdlib.h>
+
+/*
+ * 
+ */
+
+typedef struct{
+    int id;
+    char name[20];
+    int project_grade;
+    int exam_grade;
+    float final;
+} student;
+
+student **create_class_list( char *filename, int *sizePtr );
+int find_linsrch( int idNo, student **list, int size );
+int find_binsrch( int idNo, student **list, int size );
+void input_grades( char *filename, student **list, int size );
+void compute_final_course_marks(student **list, int size );
+void output_final_course_mark(char *filename,student **list,int size);
+void print_backwards(student **list, int size);
+void withdraw(int idNo, student **list, int *sizePtr);
+void output_binary(student **list, int size, const char* fname);
+void destroy_list(student **list, int *sizePtr);
+
+student **create_class_list( char *filename, int *sizePtr ){
+    char next_char='a';
+    int i,j;
+    
+    FILE *input_file = fopen( filename,"r");
+    if (input_file == NULL){
+        printf("Couldnt open\n");}
+    
+    fscanf(input_file,"%d",sizePtr);
+    
+    student **class_list;//[*sizePtr];
+    class_list= malloc(*sizePtr * sizeof(student));
+    for(i=0;i<*sizePtr;++i){
+        class_list[i] = malloc(sizeof(student));
+    }
+    
+    student TEMP_student[*sizePtr];
+    for (i = 0; i < *sizePtr; i++){
+        
+        while(next_char != '\n' && next_char != EOF){
+            fscanf(input_file,"%c",&next_char);}
+
+        fscanf(input_file,"%d",&(class_list[i]->id));
+        
+        j=0;
+        fscanf(input_file,"%c",&next_char); //reading the space after the id
+        while(next_char != '\n' && next_char != EOF){
+            fscanf(input_file,"%c",&next_char);
+            if(next_char != '\n' && next_char != EOF){
+                (class_list[i]->name[j])=next_char;
+                j=j+1;}  
+        }
+        
+        class_list[i]->name[j-1]='\0'; //finishing the name with \0
+        class_list[i]->project_grade=0;
+        class_list[i]->exam_grade=0;
+        class_list[i]->final=0.0;
+    }
+
+    fclose(input_file);
+    return(&class_list[0]);
+}
+int find_linsrch( int idNo, student **list, int size ){
+    int i;
+    for(i=0;i<size;i++){
+        if(list[i][0].id== idNo){
+            return(i);
+        }
+    }
+    return(-1);
+}
+int find_binsrch( int idNo, student **list, int size ){
+    int middle, low=0, high=size;
+    while( low < high ){
+        middle = (low + high)/2;
+        if( list[middle][0].id < idNo )
+            low = middle +1;
+        else{
+            high = middle ;}
+        }
+    if( list[low][0].id== idNo )
+        return low;
+    return(-1);
+    
+}
+void input_grades( char *filename, student **list, int size ){
+    int i,idNo,id_index;
+    
+    FILE *input_file = fopen( filename,"r");
+
+    for(i=0;i<size;i++){
+        fscanf(input_file,"%d",&idNo);
+        id_index=find_binsrch(idNo,list,size);//add error checking for result =-1?
+        fscanf(input_file,"%d",&(*list[id_index]).project_grade);
+        fscanf(input_file,"%d",&(*list[id_index]).exam_grade);
+    }
+    fclose(input_file);
+}
+void compute_final_course_marks(student **list, int size ){
+    int i;
+    for(i=0;i<size;i++){
+        (*list[i]).final = 0.4*( (*list[i]).project_grade )+  0.6*( (*list[i]).exam_grade );
+    }
+}
+void output_final_course_mark(char *filename,student **list, int size){
+    int i;
+    FILE *output_file = fopen(filename,"w");
+    fprintf(output_file,"%d\n",size);
+    for(i=0;i<size;i++){
+        fprintf(output_file,"%d %lf\n",(*list[i]).id,(*list[i]).final);
+    }
+    fclose(output_file);
+}
+void print_backwards(student **list, int size){
+    if(size>0){
+        printf("%d\n",(*list[size-1]).id);
+        print_backwards(list,size-1);
+    }
+}
+void withdraw(int idNo, student **list, int *sizePtr){
+    int i,index=find_linsrch(idNo,list,*sizePtr);
+    
+    if(index != -1){
+        for(i=index;i<*sizePtr;i++){
+            list[i]= list[i+1];
+        }
+        free((list[*sizePtr]));
+        *sizePtr = *sizePtr -1;
+    }
+    else{
+        printf("There is no student with id %d\n",idNo);
+    }
+}
+void output_binary(student **list, int size, const char* fname){
+    int i;
+    FILE *output_file = fopen(fname,"wb");
+    fprintf(output_file,"%d\n",size);
+    for(i=0;i<size;i++){
+        fprintf(output_file,"%d %s %d %d %lf\n",(*list[i]).id,(*list[i]).name,
+                (*list[i]).project_grade,(*list[i]).exam_grade,(*list[i]).final);
+    }
+    fclose(output_file);
+}
+void destroy_list(student **list, int *sizePtr){
+    int i;
+    for(i=0;i<*sizePtr;i++){
+        free(list[i]);
+    }
+    free(list);
+    *sizePtr=0;
+}
+
+
+
+int main(int argc, char** argv) {
+    char class_name[]="inputfile.txt";
+    char grade_name[]="grades.txt";
+    char final_output_name[]="outputfile.txt";
+    const char binary_output_name[]="binaryoutputfile.txt";
+    int size;
+    
+    student** class_list=create_class_list( &class_name[0],&size );
+    
+    input_grades( &grade_name[0],class_list,size);
+    
+    output_binary(class_list,size,&binary_output_name[0]);
+    
+    
+    printf("Using linear search, id %d is at index %d\n",9555,find_linsrch(9555,class_list,size));
+    
+    printf("Using linear search, id %d is at index %d\n",1200,find_linsrch(1200,class_list,size));
+    
+
+    compute_final_course_marks(class_list,size);
+
+    output_final_course_mark(&final_output_name[0],class_list,size);
+ 
+    
+    
+    printf("==Print_backwards==\n");
+    print_backwards(class_list,size);
+    withdraw(4581,class_list,&size);
+    withdraw(2222,class_list,&size);
+    
+    withdraw(9000,class_list,&size);
+    
+    
+    
+    destroy_list(class_list,&size);
+    output_binary(class_list,size,&binary_output_name[0]);
+    
+    FILE *input_file = fopen( binary_output_name,"rb");
+    printf("Reading binary output file\n");
+    int k,length;
+    char storestr[200];
+    fscanf(input_file,"%d",&length);
+    printf("%d\n",length);
+    fscanf(input_file,"%c",&storestr[0]); // read the first newline
+
+    for(k=0;k<length;k++){
+        fgets(storestr,200,input_file);
+        printf("%s",storestr);
+    }
+
+            
+    return (EXIT_SUCCESS);
+}
+

@@ -1,0 +1,148 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package l5_q1;
+
+/**
+ *
+ * @author Kevin
+ */
+public class LowerTriangularMatrix {
+        private int[]  matrixData;	// integer array to store integer data
+        private int    sizeMatrix;	// number of rows
+
+
+        public LowerTriangularMatrix( int n) //constructor1
+        {
+            sizeMatrix = n;
+            if(sizeMatrix<=0){
+                sizeMatrix=1;
+            }
+            matrixData = new int[sizeMatrix*(sizeMatrix+1)/2];
+//            for(int i=0;i< (sizeMatrix*(sizeMatrix+1)/2);i++){
+//                matrixData[i]=0;
+//            }
+        }
+        
+        public LowerTriangularMatrix(int[][] loTriM){
+            
+            sizeMatrix = loTriM.length;
+            matrixData = new int[sizeMatrix*(sizeMatrix+1)/2];
+            
+            int index=0;
+            for(int i=0;i<sizeMatrix;i++){
+                for(int j=0;j<1+i;j++){
+                    this.matrixData[index]=loTriM[i][j];
+                    index++;
+                }
+            }            
+        }
+        public int getDim(){
+            //returns the number of rows of this matrix.
+            return( this.sizeMatrix);
+        }
+        public int getElement(int i, int j) throws IndexOutOfBoundsException{
+            /*returns the matrix element on row i and column j if i and j are valid indices
+            of this matrix (indexing starts at 0); otherwise an IndexOutOfBoundsException
+            is thrown, with message ”Invalid index” */
+            
+            if(i<this.sizeMatrix && j<this.sizeMatrix){
+                if(j<=i){
+                    if(i==0){
+                        return(this.matrixData[0]);
+                    }
+                    
+                    int index =0;   //finds the index of the efficient array from 2-d coordinates
+                    int columns=2;
+                    for(int k=1;k<i;k++){
+                        index=index+columns;
+                        columns++;
+                    }
+                    index=index+j+1;
+                    return(this.matrixData[index]);
+                }
+                else{
+                    return(0);
+                }
+            }
+            else {
+                throw new IndexOutOfBoundsException("Invalid");
+                }
+            
+        }
+        public void setElement(int x, int i, int j) throws IndexOutOfBoundsException,IllegalArgumentException{
+            /*if i and j are valid indexes of the matrix, then
+            the element on row i and column j of the matrix is assigned the value x;
+            however, if indexes i and j correspond to a position in the upper part of the
+            matrix and x is not 0 then an IllegalArgumentException has to be thrown
+            with message ”Incorrect arguments”; finally, if indexes i and j do not represent a valid position in the matrix then an IndexOutOfBoundsException is
+            thrown, with message ”Invalid indexes”*/
+            if(i<this.sizeMatrix && j<this.sizeMatrix){
+                if(j<=i){
+                    if(i==0){
+                        this.matrixData[0]=x;
+                        return;
+                    }
+                    
+                    int index =0;   //finds the index of the efficient array from 2-d coordinates
+                    int columns=2;
+                    for(int k=1;k<i;k++){
+                        index=index+columns;
+                        columns++;
+                    }
+                    index=index+j+1;
+                    this.matrixData[index]=x;
+                    return;
+                }
+                else{
+                    if(x != 0){
+                        throw new IllegalArgumentException("Incorrect Arguments");
+                    }
+                }
+            }
+            else {
+                throw new IndexOutOfBoundsException("Invalid");
+                }
+            
+        }
+        public Matrix fullMatrix(){
+            /*returns a Matrix object corresponding to
+            this LowerTriangularMatrix. Note that the Matrix object will store the
+            full matrix including all the zeros from the upper part*/
+            Matrix matrix= new Matrix(this.sizeMatrix,this.sizeMatrix);
+            for(int i=0;i<this.sizeMatrix;i++){
+                for(int j =0 ;j<this.sizeMatrix;j++){
+                    matrix.setElement(this.getElement(i, j),i,j);
+                }
+            }
+            
+            return(matrix);
+        }
+        public void print1DArray(){
+            /*prints the elements of the one dimensional
+            array that stores the elements of the lower triangular part, separated by two
+            spaces.*/
+            for(int i =0;i<this.matrixData.length;i++){
+                System.out.printf("%d  ", this.matrixData[i] );
+            }
+            
+            
+        }
+        public String toString(){
+            /*returns a string representing this LowerTriangularMatrix
+            object. The representation should show all elements of the full matrix with
+            each row on a separate line.*/
+            String temp_string;
+            String matrixStr="";
+            for(int i=0;i<this.sizeMatrix;i++){
+                for(int j=0;j<this.sizeMatrix;j++){
+                    temp_string=this.getElement(i, j) + " ";
+                    matrixStr.concat(temp_string);
+                }
+                matrixStr.concat("\n");
+            }
+            return(matrixStr);
+        }
+}

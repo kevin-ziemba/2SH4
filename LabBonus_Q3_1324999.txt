@@ -1,0 +1,10 @@
+%% %%%%%%%%%%%%%%%%%%%%%%~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+%%_Question 3   , Lab Bonus_%% Comp Eng 2SH4
+%%_Plot a surface
+%%%%%%%%%%%%%%%%%%%%%%%%~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+[x y]=meshgrid(-5:0.1:5 , -5:0.1:5); % creates matrices x,y which represent the domain -5:5, spaced by 0.1 intervals
+
+z = cos(x).*cos(y).*1.*exp(-1/4*sqrt(x.^2+y.^2)); % gererate a value of z for each x and y value in the domain
+
+mesh(x,y,z);

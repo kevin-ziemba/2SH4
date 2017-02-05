@@ -1,0 +1,58 @@
+/* 
+ * File:   main.c
+ * Author: Kevin
+ *
+ * Created on October 28, 2015, 12:07 PM
+ */
+
+#include <stdio.h>
+#include <stdlib.h>
+
+/* returns the index in list of the largest prefix fitting into string
+ * 
+ */
+int largest_prefix(const char *str, const char **list, int n);
+int largest_prefix(const char *str, const char **list, int n){
+
+    int max=0,index=0,i,j,matching,flag;
+    
+    for(i=0;i<n;i++){
+        matching=0;
+        flag =0;//knowing when to stop checking below comparisons
+        
+        for(j=0;j<strlen(list[i]);j++){
+            //printf("%c !!! %c \n",str[j],list[i][j]);
+            if(flag==0){ 
+                if( str[j] != list[i][j]){
+                    flag=1; // chars did not match, no need to check the rest of string  
+                    
+                }
+            }
+        }
+        if(flag==0){
+           
+            if(strlen(list[i])>max){
+                max=strlen(list[i]);
+                index=i; 
+            }
+            
+        }
+
+    }
+    if(max==0){
+        return(-1);
+    }
+    else{
+        return(index);
+    }
+}
+int main(int argc, char** argv) {
+    char *list[]={"uni4567","univerW","u","uni","sity","un"}; /// what if the index doesnt match completely uni123 -- uni
+    char string[]="university";
+    
+    //printf("%c %c %c\n",list[0][0],list[0][2],list[1][0]);
+    int index=largest_prefix(&string,&list, 6);
+    printf("The longest prefix is at index %d in list \n(-1 means there is no prefix)\n",index);
+    return (EXIT_SUCCESS);
+}
+

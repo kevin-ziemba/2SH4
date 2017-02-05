@@ -1,0 +1,31 @@
+function [SUM  ] = compute_pi( n )
+%Estimate pi by using pi = 4-4/3+4/5-4/7+4/9 ...
+%
+    if(n>=0)
+        x=0:n-1;
+        terms=(-1).^x.*(4./(2.*x+1)); %calculates elements of terms by vector component operations
+        SUM=sum(terms); %calcuates the sum of all the terms
+    else
+        SUM=-1;
+        disp('ERROR:Value n must be 0 or positive')
+    end;
+    
+end
+
+%% %%%%%%%%%%%%%%%%%%%%%%~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+%%_Question 4   , Lab Bonus_%% Comp Eng 2SH4
+%%_Estimate pi by vector multiplication
+%%%%%%%%%%%%%%%%%%%%%%%%~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+n=8;
+
+num=zeros(1,n); 
+
+%%print out all outputs of compute_pi(n) from 1 to n
+for i=1:n
+    num(i)=compute_pi(i);
+end
+
+
+
+num'

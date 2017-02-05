@@ -1,0 +1,63 @@
+/* 
+ * File:   main.c
+ * Author: Kevin
+ *
+ * Created on October 28, 2015, 12:05 PM
+ */
+
+#include <stdio.h>
+#include <stdlib.h>
+
+/*An array x is dynamically made by the user
+ * process finds the mean and difference within its elements
+ */
+
+void process(double y[ ], int m, double *avPtr, double *difPtr);
+void process(double y[ ], int m, double *avPtr, double *difPtr){
+    double max=y[0],min=y[0],sum=0;
+    int i;
+    
+    for(i=0;i<m;i++){
+        if(y[i]>max){
+            max=y[i];
+        }
+        if(y[i]<min){
+            min=y[i];
+        }
+        sum+=y[i];
+    }
+    //printf("%f %f,sum %f",max,min,sum);
+    *avPtr=sum/m;
+    *difPtr=max-min;
+}
+int main(int argc, char** argv) {
+    int n,i;
+    double *x;
+    double mean,dif;
+    printf("Enter the number of floats you'd like to enter: ");
+    scanf("%d",&n);
+    
+    //double x[n];
+    x= (double*)calloc(n, sizeof(double));
+    printf("Enter %d numbers\n",n);
+    
+    for(i=0;i<n;i++){
+        printf("Enter the value of x[%d]: ",i);
+        scanf("%lf",&x[i]);
+    }
+
+/*
+    printf("The numbers entered are: ");
+    for( i=0 ; i < n ; i++ ) 
+    {
+        printf("%f ",x[i]);
+    }
+*/
+
+    
+    process( x, n, &mean, &dif );
+    
+    printf("Mean: %f\nDifference: %f\n",mean,dif);
+    return (EXIT_SUCCESS);
+}
+

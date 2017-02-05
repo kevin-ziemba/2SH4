@@ -1,0 +1,45 @@
+/* 
+ * File:   main.c
+ * Author: Kevin
+ *
+ * Created on October 2, 2015, 12:28 PM
+ */
+
+#include <stdio.h>
+#include <stdlib.h>
+
+/*copies a string from source[] to destination[]
+ * up to destination's length n
+ * string arrays end in '\0'
+ */
+
+void string_copy(const char source[], char destination[], int n);
+
+int string_length(char array[]);
+int string_length(char array[]){
+    int i;
+    int size=0;
+    while( array[size]!='\0')
+        size++;
+    return size;
+}
+
+
+void string_copy(const char source[], char destination[], int n){
+    int source_length= string_length(source);
+    
+    int i;
+    for(i=0;i<n-1 && i<source_length;i++)
+        destination[i]=source[i];
+    destination[i]='\0'; //last character is null character
+}
+int main(int argc, char** argv) {
+    char a[]="Butter";
+    char b[6];
+    string_copy(a,b,6);
+    int i;
+    for(i=0;i<7;i++)
+        printf("%c  ",b[i]);
+    return (EXIT_SUCCESS);
+}
+
